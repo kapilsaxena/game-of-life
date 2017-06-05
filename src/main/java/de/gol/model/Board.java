@@ -1,6 +1,9 @@
 package de.gol.model;
 
 
+import static java.util.Arrays.stream;
+import static java.util.stream.IntStream.range;
+
 public class Board {
     private Cell[][] grid;
     private int height = 3;
@@ -10,9 +13,8 @@ public class Board {
     public Board(int height, int width) {
         this.height = height;
         this.width = width;
-        this.grid = initByHeightAndWidth(height,width);
+        this.grid = initByHeightAndWidth(height, width);
     }
-
 
 
     public Board(boolean[][] gridState) {
@@ -23,39 +25,34 @@ public class Board {
 
     private Cell[][] initByState(boolean[][] gridState) {
         Cell[][] grid = new Cell[height][width];
-
-        for (int h = 0; h < height; h++) {
-            for (int w = 0; w < width; w++) {
-                grid[h][w] = new Cell(false);
-                if (gridState[h][w]) {
-                    grid[h][w].setNewState(true);
-                    grid[h][w].updateState();
-                }
+        range(0, height).forEach(h -> range(0, width).forEach(w -> {
+            grid[h][w] = new Cell(false);
+            if (gridState[h][w]) {
+                grid[h][w].setNewState(true);
+                grid[h][w].updateState();
             }
-        }
+        }));
         return grid;
     }
 
     private Cell[][] initByHeightAndWidth(int height, int width) {
         Cell[][] grid = new Cell[height][width];
-        for (int h = 0; h < height; h++) {
-            for (int w = 0; w < width; w++) {
+        range(0, height).forEach(h -> range(0, width).forEach(w -> {
+            if (grid[h][w].getState()) {
                 grid[h][w] = new Cell(false);
             }
-        }
+        }));
         return grid;
     }
 
     public boolean[][] toBoolean() {
         boolean[][] booleanGrid = new boolean[height][width];
 
-        for (int h = 0; h < height; h++) {
-            for (int w = 0; w < width; w++) {
-                if (grid[h][w].getState()) {
-                    booleanGrid[h][w] = true;
-                }
+        range(0, height).forEach(h -> range(0, width).forEach(w -> {
+            if (grid[h][w].getState()) {
+                booleanGrid[h][w] = true;
             }
-        }
+        }));
         return booleanGrid;
     }
 
@@ -131,33 +128,27 @@ public class Board {
      * according to GoF rules
      */
     private void prepare() {
-        for (int h = 0; h < grid.length; h++) {
-            for (int w = 0; w < grid[h].length; w++) {
-                int nr = neighboursCountAt(h, w);
-                if (nr < 2) {
-                    grid[h][w].setNewState(false);
-                }  //underpop
-                else if (nr > 3) {
-                    grid[h][w].setNewState(false);
-                } //overcrowd
-                else if (nr == 3) {
-                    grid[h][w].setNewState(true);
-                } //born
-                else if (nr == 2) {
-                    grid[h][w].setNewState(grid[h][w].getState());
-                } // stay same
-            }
-        }
+        range(0, grid.length).forEach(h -> range(0, grid[h].length).forEach(w -> {
+            int nr = neighboursCountAt(h, w);
+            if (nr < 2) {
+                grid[h][w].setNewState(false);
+            }  //underpop
+            else if (nr > 3) {
+                grid[h][w].setNewState(false);
+            } //overcrowd
+            else if (nr == 3) {
+                grid[h][w].setNewState(true);
+            } //born
+            else if (nr == 2) {
+                grid[h][w].setNewState(grid[h][w].getState());
+            } // stay same
+        }));
     }
 
     /**
      * Updates Cell state based on newState
      */
     private void commit() {
-        for (Cell[] aGrid : grid) {
-            for (Cell anAGrid : aGrid) {
-                anAGrid.updateState();
-            }
-        }
+        stream(grid).forEach(row -> stream(row).forEach(Cell::updateState));
     }
 }

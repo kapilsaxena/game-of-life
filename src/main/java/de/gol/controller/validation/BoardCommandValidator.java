@@ -1,5 +1,6 @@
-package de.gol.controller;
+package de.gol.controller.validation;
 
+import de.gol.controller.BoardCommand;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -18,19 +19,15 @@ public class BoardCommandValidator implements Validator {
         BoardCommand cmd = (BoardCommand) target;
 
         if (cmd.getBoard() == null) {
-            errors.rejectValue("board", "1", "Board cannot be null");
-            return;
+            throw new MethodArgumentNotValidException("board","Board cannot be null");
         }
 
         if (cmd.getBoard().length == 0) {
-            errors.rejectValue("board", "2", "Board height cannot be 0");
-            return;
+            throw new MethodArgumentNotValidException("board","Board height cannot be 0");
         }
 
         if (cmd.getBoard()[0].length == 0) {
-            errors.rejectValue("board", "3", "Board width cannot be 0");
-            return;
+            throw new MethodArgumentNotValidException("board","Board width cannot be 0");
         }
-
     }
 }

@@ -3,6 +3,7 @@ h1 {
     color: #844;
     font-style: bold;
 }
+
 table#board td {
     width: 1.5em;
     height: 1.5em;
@@ -14,6 +15,7 @@ table#board td {
 .history {
     color: #777;
 }
+
 table.history td {
     width: 1.5em;
     height: 1.5em;

@@ -3,6 +3,7 @@
 
         $scope.newGame = function () {
             $scope.board = init($scope.height, $scope.width);
+            $scope.autoplay(false);
         };
 
         $scope.next = function () {
@@ -20,6 +21,16 @@
 
         $scope.toggle = function (row, cell) {
             $scope.board[row][cell] = !$scope.board[row][cell];
+        };
+
+        $scope.autoplay = function (check) {
+            if (check) {
+                $scope.autoplayInterval = setInterval(function () {
+                    $scope.next();
+                }, 1000);
+            } else {
+                clearInterval($scope.autoplayInterval);
+            }
         };
 
         $scope.height = 10;
