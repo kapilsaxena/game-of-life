@@ -1,19 +1,21 @@
 package de.gol.controller;
 
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@SpringApplicationConfiguration(classes = AnalyzerApplication.class)
+import de.gol.app.GameOfLifeApplication;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+@RunWith(SpringJUnit4ClassRunner.class)
 public class GameOfLifeControllerTest {
 
-//    @Autowired
-//    private UrlController controller;
+    @Autowired
+    private GameOfLifeController controller;
 
-//    @Test(expected = IllegalArgumentException.class)
-//    public void testAnalyze_uglyUrl() throws Exception {
-//        controller.analyze("uglyurl");
-//    }
-//
-//    @Test(expected = UnknownHostException.class)
-//    public void testAnalyze_unknownHost() throws Exception {
-//        controller.analyze("http://test.test.test.test.test");
-//    }
+    @Test
+    public void test_() throws Exception {
+
+    }
+
 }

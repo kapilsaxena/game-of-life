@@ -5,8 +5,6 @@ import de.gol.controller.validation.MethodArgumentNotValidException;
 import de.gol.controller.validation.ValidationErrorDTO;
 import de.gol.model.Board;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -14,8 +12,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 @RestController
-@RequestMapping({"", "/v1"})
+@RequestMapping({"gol/", "gol/v1"})
 public class GameOfLifeController {
 
     private final BoardCommandValidator boardCommandValidator;
@@ -31,20 +32,20 @@ public class GameOfLifeController {
         binder.setValidator(boardCommandValidator);
     }
 
-    @GetMapping(value = "/newGame", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(produces = APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity next(@RequestParam("height") int height, @RequestParam("width") int width) {
+    public ResponseEntity newGame(@RequestParam("height") int height, @RequestParam("width") int width) {
         return ResponseEntity.ok(BoardCommand.build(new Board(height, width).toBoolean()));
     }
 
-    @PostMapping(value = "/next", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/next", produces = APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity next(@Valid @RequestBody BoardCommand boardCommand, BindingResult result) {
+    public ResponseEntity next(@Valid @RequestBody BoardCommand boardCommand) {
         Board board = new Board(boardCommand.getBoard()).doNext(); // Build board from state and do next move
         return ResponseEntity.ok(BoardCommand.build(board.toBoolean()));
     }
 
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ResponseStatus(value = BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
     public ValidationErrorDTO internalServerExceptionHandler(MethodArgumentNotValidException ex) {

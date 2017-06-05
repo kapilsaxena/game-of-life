@@ -37,11 +37,9 @@ public class Board {
 
     private Cell[][] initByHeightAndWidth(int height, int width) {
         Cell[][] grid = new Cell[height][width];
-        range(0, height).forEach(h -> range(0, width).forEach(w -> {
-            if (grid[h][w].getState()) {
-                grid[h][w] = new Cell(false);
-            }
-        }));
+        range(0, height)
+                .forEach(h -> range(0, width)
+                        .forEach(w -> grid[h][w] = new Cell(false)));
         return grid;
     }
 

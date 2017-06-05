@@ -8,8 +8,8 @@
 
         $scope.next = function () {
             $http({
-                method: 'POST',
-                url: '/next',
+                method: 'PUT',
+                url: 'gol/next',
                 data: {
                     board: $scope.board
                 }
