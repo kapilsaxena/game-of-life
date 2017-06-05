@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="./bower_components/bootstrap-css-only/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="./bower_components/components-font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="./app/main.css"/>
+</head>
+<body ng-app="myApp">
+<div class="container" ng-controller="AppController">
+    <div class="page-header">
+        <h1>Game of Life</h1>
+    </div>
+    Height: <input type="text" ng-model="height"/>
+    Width: <input type="text" ng-model="width"/>
+    <button ng-click="newGame()">New</button>
+    <button ng-click="next()">Next</button>
+
+    <table id="board">
+        <tr ng-repeat="row in board">
+            <td ng-repeat="cell in row track by $index" ng-click="toggle($parent.$index, $index)">
+                <span ng-show="cell">O</span>
+            </td>
+        </tr>
+    </table>
+
+</div>
+<script type="text/javascript" src="./bower_components/angular/angular.min.js"></script>
+<script type="text/javascript" src="./bower_components/angular-resource/angular-resource.min.js"></script>
+<script type="text/javascript" src="./app/app.js"></script>
+<script type="text/javascript" src="./app/controllers.js"></script>
+</body>
+</html>
