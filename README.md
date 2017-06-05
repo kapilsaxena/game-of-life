@@ -1,21 +1,32 @@
-Game of Life
+**Game of Life**
 
-Technology stack
+Implementation of Conway's Game of Life game based on Java and Angular js
 
-Spring boot 1.3.6
+https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
+
+**Technology stack**
+
+Spring boot
 Spring Rest
-Angularjs frontend
+AngularJS
+AssertJ for tests
 
-Install and run
+**Rest Endpoints**
 
-1. ./gradlew build
-2. locate jar file in build/libs/game-of-life-0.0.1-SNAPSHOT.jar
-java -jar game-of-life-0.0.1-SNAPSHOT.jar
+* POST /gol/?height=10&widht=20 - returns boolean[][] board
+* PUT /gol/next BODY board:boolean[][] - does 'game of life move' on the proivded board
 
-or you can use makefile
+**Install and run**
 
-1. make build-local (for building the application)
-2. make start (for starting the app)
+1. `./gradlew build`
+2. locate jar file in `build/libs/game-of-life-1.0.1-SNAPSHOT.jar`
+3. `java -jar game-of-life-1.0.1-SNAPSHOT.jar`
 
-By default app uses 8080 port so to access the web page type
+To build and run Docker
+
+`./gradlew buildDocker`
+
+`docker run -p 8080:8080 outfittery/game-of-life`
+
+By default app uses 8080 port, so to access the web page type
 http://localhost:8080

@@ -7,15 +7,17 @@ buildscript {
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath('se.transmode.gradle:gradle-docker:1.2')
     }
 }
 
 apply plugin: 'java'
 apply plugin: 'spring-boot'
+apply plugin: 'docker'
 
 jar {
     baseName = 'game-of-life'
-    version = '0.0.1-SNAPSHOT'
+    version = '1.0.1-SNAPSHOT'
 }
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -24,9 +26,31 @@ repositories {
     mavenCentral()
 }
 
+def versions = [
+        springweb          : "4.3.8.RELEASE",
+        assertj            : "1.0.0"
+]
+
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
     compile("org.springframework.boot:spring-boot-starter-jetty")
-    compile group: 'org.springframework', name: 'spring-web', version: '4.3.8.RELEASE'
+    compile("org.springframework:spring-web:${versions.springweb}")
+    compile("org.assertj:assertj-core:${versions.assertj}")
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
+
+
+task buildDocker(type: Docker, dependsOn: build) {
+    baseImage = 'develar/java:latest'
+    applicationName = jar.baseName
+    push = project.hasProperty('push')
+    tag = "outfittery/game-of-life"
+    addFile {
+        from jar
+        rename { 'app.jar' }
+    }
+    entryPoint(['java', '-jar', 'app.jar'])
+    exposePort(8080)
+}
+
+buildDocker.dependsOn(build)

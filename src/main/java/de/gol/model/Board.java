@@ -6,8 +6,8 @@ import static java.util.stream.IntStream.range;
 
 public class Board {
     private Cell[][] grid;
-    private int height = 3;
-    private int width = 3;
+    private int height;
+    private int width;
 
 
     public Board(int height, int width) {

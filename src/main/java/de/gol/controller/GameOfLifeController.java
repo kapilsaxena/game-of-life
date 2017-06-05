@@ -6,7 +6,6 @@ import de.gol.controller.validation.ValidationErrorDTO;
 import de.gol.model.Board;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,9 +31,9 @@ public class GameOfLifeController {
         binder.setValidator(boardCommandValidator);
     }
 
-    @GetMapping(produces = APPLICATION_JSON_VALUE)
+    @PostMapping(produces = APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity newGame(@RequestParam("height") int height, @RequestParam("width") int width) {
+    public ResponseEntity<BoardCommand> newGame(@RequestParam("height") int height, @RequestParam("width") int width) {
         return ResponseEntity.ok(BoardCommand.build(new Board(height, width).toBoolean()));
     }
 
